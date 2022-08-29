@@ -23,15 +23,16 @@ function recomPick(id) {
         element.setAttribute('onclick', 'selectPick(this)'); 
     }
 }
+
 let alreadyClicked = [];
-let availableProd = [1,2,3,4,5,6,7,8];  // keep tracks of available recommendations 
+let availableProd = [1,2,3,4,5,6,7,8];               // keep tracks of available recommendations 
 // track selection against recommendation
 function selectPick(id) {
     const x = document.getElementById(id.id);
     const thiscol = parseInt(x.id.substr(3,1));
     const nextcol = thiscol + 1;
     
-    alreadyClicked.push(parseInt(x.id.substr(4,1)));
+    alreadyClicked.push(parseInt(x.id.substr(4,1)));   // keep track of already clicked
     console.log('already clicked: ' + alreadyClicked);
     
     if (x.className == 'btn btn-primary') {
@@ -82,22 +83,15 @@ function selectPick(id) {
 
 // onclick='selectPick(this)'
 // build html cards
-for (let k=1; k<=8; k++) {
-    for (let i=1; i<=8; i++) {
-
-        myName = 'but'+k.toString()+i.toString();
-        //console.log(myName);
-        myHtml =  "<div class='card' style='width: 6rem;'><div class='card-body'><h5 class='card-title'>" + i + "</h5><p class='card-text'></p><a href='#' id="+myName+"  class='btn btn-secondary'>Select</a></div></div>";
-        myCol = "colxx"+k;
+prodSet = ['mob','ml','cust','edu1','edu2','prd1','prd2','trad'];
+for (let i=1; i<=8; i++) {
+    for (let j=1; j<=8; j++) {
+        myName = 'but'+i.toString()+j.toString();
+        
+        myHtml =  "<div class='card' style='width: 6rem;'><div class='card-body'><h5 class='card-title'>" + prodSet[j-1] + "</h5><p class='card-text'></p><a href='#' id="+myName+"  class='btn btn-secondary'>Select</a></div></div>";
+        myCol = "colxx"+i;
         let myText = document.getElementById(myCol);
         myText.innerHTML += myHtml;
     };
 };
 
-let buttonHome = document.querySelector(".btn");
-let CountButtonHomeClicks = 0;
-
-buttonHome.addEventListener("click", function() {
-  CountButtonHomeClicks += 1;
-  //console.log(CountButtonHomeClicks);
-});
