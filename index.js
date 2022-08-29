@@ -3,74 +3,81 @@
 // build 2x2 array of buttons
 const listButton = [];
 for (let i=1; i<=8; i++) {
-    const tempArray = [];
+    const firstArray = [];
     for (let j=1; j<=8; j++) {
         myItem = 'but'+i.toString()+j.toString();
-        tempArray.push(myItem);
+        firstArray.push(myItem);
     };
-    listButton.push(tempArray);
+    listButton.push(firstArray);
 };
-// random pick to start
-function recomPick(id) {        ;
-    //console.log(listButton[0]);
+
+// random recom to start
+function recomPick(id) {        
     let pick = Math.floor(Math.random()*(8-1+1)+1)-1;
-    //console.log(pick);
-    //console.log(id.id);
     const p = document.getElementById(listButton[0][pick]);
-    //console.log(p.className);
     p.className = 'btn btn-primary';
     // add onclick to the next col                 
     for (let i=1; i<=8; i++) {
         myElement = 'but1' + i;
         const element = document.getElementById(myElement);
-        element.setAttribute('onclick', 'selectPick(this)');
-        //console.log(element);
-        
+        element.setAttribute('onclick', 'selectPick(this)'); 
     }
 }
+let alreadyClicked = [];
+let availableProd = [1,2,3,4,5,6,7,8];  // keep tracks of available recommendations 
 // track selection against recommendation
 function selectPick(id) {
-    //console.log(id.id);
     const x = document.getElementById(id.id);
     const thiscol = parseInt(x.id.substr(3,1));
     const nextcol = thiscol + 1;
     
-    //console.log(parseInt(x.id.substr(3, 1)));
-    //console.log(x.className);
+    alreadyClicked.push(parseInt(x.id.substr(4,1)));
+    console.log('already clicked: ' + alreadyClicked);
+    
     if (x.className == 'btn btn-primary') {
          x.className = 'btn btn-success';
     } else {
         
         x.className = 'btn btn-danger';
     }
+    //console.log(parseInt(x.id.substr(4,1)));
+    
     //remove all onclick from current col
     for (let i=1; i<=8; i++) {
         myElement = 'but'+ thiscol + i;
         const element = document.getElementById(myElement);
         element.removeAttribute('onclick');
-        //console.log(element);
-        
     }
     
     // simulate recom using random integer
-    let pick = Math.floor(Math.random()*(8-1+1)+1)-1;
+    poollen = availableProd.length - 1;
+    // console.log('poollen: ' + poollen);
+    for (let i=0; i<=poollen; i++) {
+        if (alreadyClicked.includes(availableProd[i])) {
+            availableProd.splice(i, 1);
+        }
+    }
+    console.log('available pool:  ' + availableProd);
+    
+    let pick = Math.floor(Math.random()*availableProd.length);
     if (thiscol <= 7) {
-        const p = document.getElementById(listButton[thiscol][pick]);
-        //console.log(p.className);
+        
+        console.log('rec pick:' + availableProd[pick]);
+        const p = document.getElementById(listButton[thiscol][availableProd[pick]-1]);
+        
         p.className = 'btn btn-primary';
     }
-    // add onclick to the next col    
-    console.log('nextcol = ' + nextcol);
+    // add onclick to the next col only it hasn't already been clicked   
+    // console.log('nextcol = ' + nextcol);
     for (let i=1; i<=8; i++) {
         myElement = 'but'+ nextcol + i;
-        //console.log(myElement);
-        if (nextcol <= 8) {
+        //console.log(parseInt(myElement.substr(4,1)));
+        if (nextcol <= 8 && !alreadyClicked.includes(i)  ) {
             const element = document.getElementById(myElement);
             element.setAttribute('onclick', 'selectPick(this)');
         }
         //console.log(element);  
-    }
-    
+    } 
 }
 
 // onclick='selectPick(this)'
