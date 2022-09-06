@@ -2,7 +2,7 @@
 Simulate Nancy's TF sequential recommender in a sandbox application
 
 test 1: local version of code
-/*
+###
 <div class="card" style="max-width: 500px;">
       <div class="row">
         <div class="col-md-4">
